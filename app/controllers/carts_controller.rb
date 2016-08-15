@@ -69,7 +69,7 @@ class CartsController < ApplicationController
     @cart.destroy
     session[:cart_id]  =  nil
     respond_to do |format|
-      format.html { redirect_to root_url, notice: '购物车已清空' }
+      format.html { redirect_to root_url }
       format.json { head :no_content }
     end
   end
