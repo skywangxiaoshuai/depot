@@ -1,5 +1,5 @@
-source 'https://rubygems.org'
-
+# source 'https://rubygems.org'
+source 'https://ruby.taobao.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
@@ -31,8 +31,17 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: :mri
+  gem "thin"
+
+  gem "factory_girl_rails", "~> 4.0"
+
+  # For debugger
+  gem "pry-rails", "~> 0.3.2"
+
+  gem 'pry-doc', "~> 0.8.0"
+
+  # For ruby2.0 use byebug instead of debugger
+  gem 'pry-byebug', "~> 2.0.0"
 end
 
 group :development do
