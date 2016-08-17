@@ -1,10 +1,16 @@
 class OrdersController < ApplicationController
+  skip_before_filter :authorize, only: [:new, :create]
   before_action :set_order, only: [:show, :edit, :update, :destroy]
 
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    @orders = Order.paginate( page: params[:page], per_page: 10)
+
+    respond_to  do  |format|
+      format.html  #  index.html.erb
+      format.json  {  render  json:  @orders  }
+    end
   end
 
   # GET /orders/1
@@ -44,6 +50,7 @@ class OrdersController < ApplicationController
         end
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
+        OrderNotifierMailer.received(@order).deliver
         format.html { redirect_to root_url, notice: 'Thank you for your order.' }
         format.xml { render :xml  =>  @order, status: :created, location: @order }
       else
