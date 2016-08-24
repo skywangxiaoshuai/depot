@@ -22,18 +22,16 @@ class CartsController < ApplicationController
   #       end
   #     end
   # end
-    def show
-      begin
-        @cart  =  Cart.find(params[:id])
-        respond_to  do  |format|
-          format.html  #  show.html.erb
-          format.json  {  render  xml:  @cart  }
-        end
-      rescue Exception => e
-        logger.error  "Attempt  to  access  invalid  cart  #{params[:id]}"
-        redirect_to  root_url,  notice:  "Invalid  cart #{e}"
-      end
-  end
+  def show
+    @cart = Cart.find(params[:id])
+    respond_to do |format|
+      format.html #  show.html.erb
+      format.json { render xml:  @cart }
+    end
+rescue Exception => e
+  logger.error "Attempt  to  access  invalid  cart  #{params[:id]}"
+  redirect_to root_url, notice:  "Invalid  cart #{e}"
+end
 
   # GET /carts/new
   def new
@@ -77,9 +75,9 @@ class CartsController < ApplicationController
   # DELETE /carts/1
   # DELETE /carts/1.json
   def destroy
-    @cart  =  current_cart
+    @cart = current_cart
     @cart.destroy
-    session[:cart_id]  =  nil
+    session[:cart_id] = nil
     respond_to do |format|
       format.html { redirect_to root_url }
       format.json { head :no_content }
@@ -87,13 +85,14 @@ class CartsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_cart
-      @cart = Cart.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def cart_params
-      params.fetch(:cart, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_cart
+    @cart = Cart.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def cart_params
+    params.fetch(:cart, {})
+  end
 end

@@ -5,11 +5,11 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.paginate( page: params[:page], per_page: 10)
+    @orders = Order.paginate(page: params[:page], per_page: 10)
 
-    respond_to  do  |format|
-      format.html  #  index.html.erb
-      format.json  {  render  json:  @orders  }
+    respond_to  do |format|
+      format.html #  index.html.erb
+      format.json { render json:  @orders }
     end
   end
 
@@ -22,13 +22,13 @@ class OrdersController < ApplicationController
   def new
     @cart = current_cart
     if @cart.line_items.empty?
-        redirect_to store_url, notice: "Your cart is empty"
-        return
+      redirect_to store_url, notice: 'Your cart is empty'
+      return
     end
     @order = Order.new
     respond_to do |format|
-        format.html # new.html.erb
-        format.xml { render xml: @order }
+      format.html # new.html.erb
+      format.xml { render xml: @order }
     end
   end
 
@@ -52,7 +52,7 @@ class OrdersController < ApplicationController
         session[:cart_id] = nil
         OrderNotifierMailer.received(@order).deliver
         format.html { redirect_to root_url, notice: 'Thank you for your order.' }
-        format.xml { render :xml  =>  @order, status: :created, location: @order }
+        format.xml { render xml: @order, status: :created, location: @order }
       else
         @cart = current_cart
         format.html { render :new }
@@ -86,13 +86,14 @@ class OrdersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_order
-      @order = Order.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_order
+    @order = Order.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def order_params
+    params.require(:order).permit(:name, :address, :email, :pay_type)
+  end
 end
